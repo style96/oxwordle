@@ -16,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,18 +38,18 @@ internal fun GameGrid(
     state: GameViewModel.State,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(modifier = modifier) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Center
+    Box(modifier = modifier) {
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             repeat(6) { row ->
                 Row(
                     Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    horizontalArrangement = spacedBy(4.dp)) {
+                        .weight(1f,false)
+                        .padding(top = 6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
+                    verticalAlignment = Alignment.CenterVertically) {
                     repeat(5) { column ->
                         val character: Char?
                         val status: EqualityStatus?
@@ -131,7 +133,7 @@ internal fun BasicCharacterBox(
     }
     Box(
         modifier
-            .aspectRatio(1f)
+            .aspectRatio(1f,true)
             .clip(RoundedCornerShape(2.dp))
             .then(borderModifier)
             .background(animateColorAsState(targetValue = color).value),

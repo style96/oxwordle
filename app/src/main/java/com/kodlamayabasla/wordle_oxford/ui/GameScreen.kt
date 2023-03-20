@@ -1,36 +1,33 @@
 package com.kodlamayabasla.wordle_oxford.ui
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kodlamayabasla.wordle_oxford.backend.models.Game
 import com.kodlamayabasla.wordle_oxford.backend.models.Level
-import com.kodlamayabasla.wordle_oxford.backend.usecase.GetWordStatus
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModel
-import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModelFactory
+import com.kodlamayabasla.wordle_oxford.backend.viewmodel.SettingsViewModel
 
 @Composable
 internal fun WordScreen(
     level: Level,
     viewModel: GameViewModel,
+    settingsViewModel: SettingsViewModel = viewModel(),
     levelCompleted: () -> Unit,
 ) {
-    Log.d("deneme","deneme")
     val state by viewModel.state().collectAsState()
     GameScreen(
         level,
         state,
+        settingsViewModel,
         onKey = {
             viewModel.characterEntered(it)
         },
@@ -56,6 +53,7 @@ internal fun WordScreen(
 fun GameScreen(
     level: Level,
     state: GameViewModel.State,
+    settingsViewModel: SettingsViewModel,
     onKey: (char: Char) -> Unit,
     onBackspace: () -> Unit,
     onSubmit: () -> Unit,
@@ -63,18 +61,25 @@ fun GameScreen(
     shownWon: () -> Unit,
     shownLost: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var settings by remember { mutableStateOf(false) }
+    var statistics by remember { mutableStateOf(false) }
+    var help by remember { mutableStateOf(false) }
     Box(
         Modifier
             .fillMaxSize(),
-        contentAlignment = Center
+        contentAlignment = TopCenter
     ) {
         Column(
-            Modifier
+            modifier = Modifier
                 .padding(horizontal = 8.dp, vertical = 16.dp)
-                .widthIn(max = 500.dp)
+                .widthIn(max = 500.dp),
+            verticalArrangement = Arrangement.SpaceBetween
                 ) {
-            GameHeader(level,onExpanded = {expanded = !expanded})
+            GameHeader(
+                level = level,
+                onSettings = {settings=!settings},
+                onStatistics = {statistics = !statistics},
+                onHelp = {help = !help})
             GameGrid(
                 state,
                 modifier = Modifier
@@ -92,7 +97,8 @@ fun GameScreen(
                 onSubmit = onSubmit,
             )
         }
-        SettingsScreen(expanded, onExpanded = {expanded = !expanded})
+        SettingsScreen(settingsViewModel,settings, onExpanded = {settings = !settings})
+        StatisticsScreen(settingsViewModel,statistics, onExpanded = {statistics = !statistics})
         ErrorScreen(state, shownError)
         WonScreen(state, shownWon)
         GameOverScreen(state, shownLost)

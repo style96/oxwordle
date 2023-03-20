@@ -134,7 +134,7 @@ private fun KeyboardKey(
         .clip(RoundedCornerShape(4.dp))
         .background(color)
         .clickable(onClick = {
-            context.vibrate()
+            //context.vibrate()
             onClick()
         }), Alignment.Center) {
         Text(
@@ -146,7 +146,10 @@ private fun KeyboardKey(
     }
 }
 
+/*
 private fun Context.vibrate() {
     val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     vibrator.vibrate(10)
 }
+
+ */

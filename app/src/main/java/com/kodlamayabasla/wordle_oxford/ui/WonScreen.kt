@@ -8,10 +8,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,24 @@ internal fun WonScreen(
     shownWon: () -> Unit,
 ) {
 
+    /*
+    if(state.game.isWon){
+        AlertDialog(
+            onDismissRequest = {shownWon()},
+            confirmButton = {
+                Button(onClick = { shownWon() }) {
+                    Text(text = "Next OxWordle", color = MaterialTheme.colorScheme.onCorrectBackground)
+                }
+            },
+            title = {
+                Text(text = "Level Passed!")
+            },
+            icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+        )
+    }
+*/
+
+/*
     if(state.game.isWon){
         AlertDialog(onDismissRequest = {shownWon()}) {
             Box(Modifier
@@ -50,16 +67,8 @@ internal fun WonScreen(
         }
     }
 
+*/
 
-
-
-
-
-
-
-
-
-/*
     AnimatedVisibility(state.game.isWon, modifier = Modifier.fillMaxSize(),
         enter = fadeIn(), exit = fadeOut()
     ) {
@@ -86,5 +95,4 @@ internal fun WonScreen(
 
     }
 
- */
 }

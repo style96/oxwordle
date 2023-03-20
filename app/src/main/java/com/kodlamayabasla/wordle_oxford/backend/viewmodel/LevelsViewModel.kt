@@ -14,7 +14,6 @@ class LevelsViewModel(
     data class State(
         val currentLevel: Level? = null,
         val lastLevelReached: Boolean = false,
-
         )
 
     init {

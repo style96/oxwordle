@@ -1,5 +1,6 @@
 package com.kodlamayabasla.wordle_oxford.ui
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +19,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +34,13 @@ import com.kodlamayabasla.wordle_oxford.backend.models.Level
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun ColumnScope.GameHeader(level: Level,modifier: Modifier = Modifier,onExpanded : () -> Unit,) {
+internal fun ColumnScope.GameHeader(level: Level,
+                                    modifier: Modifier = Modifier,
+                                    onSettings : () -> Unit,
+                                    onStatistics : () -> Unit,
+                                    onHelp : () -> Unit,) {
     var revealing by remember(level) { mutableStateOf(false) }
-    GameHeader(modifier,onExpanded) {
+    GameHeader(modifier,onSettings,onStatistics,onHelp) {
         LevelHeaderContent(level, revealing) {
             revealing = it
         }
@@ -44,27 +51,27 @@ internal fun ColumnScope.GameHeader(level: Level,modifier: Modifier = Modifier,o
 @Composable
 internal fun ColumnScope.GameHeader(
     modifier: Modifier = Modifier,
-    onExpanded : () -> Unit,
+    onSettings : () -> Unit,
+    onStatistics : () -> Unit,
+    onHelp : () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(modifier
         .align(Alignment.CenterHorizontally)) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            GameHeaderLeft()
+            GameHeaderLeft(onHelp = onHelp)
             GameHeaderTitle()
-            GameHeaderRight(onExpanded)
+            GameHeaderRight(onSettings =  onSettings, onStatistics = onStatistics )
         }
-        //content()
+        content()
     }
 
 }
 
 @Composable
-fun RowScope.GameHeaderLeft(){
+fun RowScope.GameHeaderLeft(onHelp : () -> Unit){
     Row(modifier = Modifier.weight(0.5f)){
-        IconButton(modifier = Modifier.weight(1f),onClick = { /*TODO*/ }) {
+        IconButton(modifier = Modifier.weight(1f),onClick = onHelp) {
             Icon(Icons.Default.Info,"info",Modifier.weight(1f))
         }
     }
@@ -81,78 +88,32 @@ fun RowScope.GameHeaderTitle(){
     }
 }
 @Composable
-fun RowScope.GameHeaderRight(onExpanded : () -> Unit){
+fun RowScope.GameHeaderRight(onSettings : () -> Unit, onStatistics : () -> Unit){
     Row(modifier = Modifier.weight(0.5f)) {
-        IconButton(modifier = Modifier.weight(1f), onClick = { onExpanded() }) {
-            Icon(Icons.Default.MoreVert,"statistic",)
+        IconButton(modifier = Modifier.weight(1f), onClick = onStatistics) {
+            Icon(painter = painterResource(R.drawable.baseline_leaderboard_24), "statistic")
         }
-
-        IconButton(modifier = Modifier.weight(1f),onClick = { /*TODO*/ }) {
+        IconButton(modifier = Modifier.weight(1f),onClick = onSettings ) {
             Icon(Icons.Default.Settings,"settings",Modifier.weight(1f))
         }
     }
 
 }
 
-@Composable
-fun GameHeaderDropDownMenu(
-    expanded : Boolean,
-    onExpanded : () -> Unit) {
-
-    DropdownMenu(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.8f),
-        expanded = expanded,
-        onDismissRequest = { onExpanded() }
-    ) {
-        DropdownMenuItem(
-            text = { Text("Edit") },
-            onClick = { /* Handle edit! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Edit,
-                    contentDescription = null
-                )
-            })
-        DropdownMenuItem(
-            text = { Text("Settings") },
-            onClick = { /* Handle settings! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Settings,
-                    contentDescription = null
-                )
-            })
-        Divider()
-        DropdownMenuItem(
-            text = { Text("Send Feedback") },
-            onClick = { /* Handle send feedback! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Email,
-                    contentDescription = null
-                )
-            },
-            trailingIcon = { Text("F11", textAlign = TextAlign.Center) })
-    }
-}
-@OptIn(ExperimentalAnimationApi::class)
 @Preview()
 @Composable
 fun GameHeaderPreview(){
     val modifier = Modifier
-    var expanded by remember { mutableStateOf(false) }
-
+    var settings by remember { mutableStateOf(false) }
+    var statistics by remember { mutableStateOf(false) }
+    var help by remember { mutableStateOf(false) }
     Column(modifier) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            GameHeaderLeft()
+            GameHeaderLeft {help = !help}
             GameHeaderTitle()
-            GameHeaderRight {expanded = !expanded}
+            GameHeaderRight(onSettings = {settings=!settings}, onStatistics = {statistics = !statistics})
         }
-        GameHeaderDropDownMenu(expanded, onExpanded = {expanded = !expanded})
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -165,17 +126,11 @@ fun TopAppBarPreview() {
         "OxWordle!"
         )},
         navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
-        actions = {
             IconButton(modifier = Modifier, onClick = { /*TODO*/ }) {
                 Icon(Icons.Default.Info,"info",)
             }
+        },
+        actions = {
             IconButton(modifier = Modifier,onClick = { /*TODO*/ }) {
                 Icon(Icons.Default.Person,"statistic",)
             }

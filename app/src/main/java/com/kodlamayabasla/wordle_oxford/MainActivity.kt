@@ -24,10 +24,7 @@ import com.kodlamayabasla.wordle_oxford.backend.repository.LocalStorageLevelRepo
 import com.kodlamayabasla.wordle_oxford.backend.usecase.GetNextLevel
 import com.kodlamayabasla.wordle_oxford.backend.usecase.GetWordStatus
 import com.kodlamayabasla.wordle_oxford.backend.usecase.ResetLevels
-import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModel
-import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModelFactory
-import com.kodlamayabasla.wordle_oxford.backend.viewmodel.LevelsViewModel
-import com.kodlamayabasla.wordle_oxford.backend.viewmodel.LevelsViewModelFactory
+import com.kodlamayabasla.wordle_oxford.backend.viewmodel.*
 import com.kodlamayabasla.wordle_oxford.ui.GameHeader
 import com.kodlamayabasla.wordle_oxford.ui.WordScreen
 import com.kodlamayabasla.wordle_oxford.ui.theme.OxWordleTheme
@@ -90,9 +87,12 @@ class MainActivity : ComponentActivity() {
                     else {
                         Box(contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                var expanded by remember { mutableStateOf(false) }
-                                GameHeader(onExpanded = {expanded = !expanded}) {
-
+                                var settings by remember { mutableStateOf(false) }
+                                var statistics by remember { mutableStateOf(false) }
+                                var help by remember { mutableStateOf(false) }
+                                GameHeader(onSettings = {settings=!settings},
+                                    onStatistics = {statistics = !statistics},
+                                    onHelp = {help = !help}) {
                                 }
                                 Text(text = "You have mastered the game (1024 levels)!",
                                     style = MaterialTheme.typography.headlineSmall,

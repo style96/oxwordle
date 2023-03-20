@@ -1,221 +1,207 @@
 package com.kodlamayabasla.wordle_oxford.ui
 
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomCenter
-import androidx.compose.ui.Alignment.Companion.End
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
-import com.kodlamayabasla.wordle_oxford.ui.theme.onCorrectBackground
+import com.kodlamayabasla.wordle_oxford.backend.viewmodel.SettingsViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun BoxScope.SettingsScreen(
+fun SettingsScreen(
+    settingsViewModel: SettingsViewModel,
     expanded : Boolean,
     onExpanded : () -> Unit) {
-    /*
-    if(expanded) {
+    val state by settingsViewModel.state().collectAsState()
+    if (expanded){
         Box(modifier = Modifier
             .fillMaxSize()
             .clickable { onExpanded() }
-            .background(Color.Black.copy(alpha = 0.3f))
-            .focusable(true)
+            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.5f))
+            .focusable(true),
+            contentAlignment = BottomCenter
         ){
-            
-            Dialog(onDismissRequest = onExpanded) {
+            AnimatedVisibility(expanded,
+                enter = slideInVertically(
+                    initialOffsetY = {
+                        it / 2
+                    },
+                )+ fadeIn(
+                    // Fade in with the initial alpha of 0.3f.
+                    initialAlpha = 0.3f
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = {
+                        it / 2
+                    },
+                )+ fadeOut()
+            ){
                 Column(modifier = Modifier
-                    .align(BottomCenter)
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f)
+                    .shadow(elevation = 16.dp, shape = RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.background)
                     .clickable(enabled = false) {}
-                    .focusable(true)
-                ){
-                    val focusRequester = remember { FocusRequester() }
-                    IconButton(modifier = Modifier
-                        .align(End),
-                        onClick = { onExpanded() }) {
-                        Icon(Icons.Outlined.Close,"Close",)
-                    }
-                    DropdownMenuItem(
-                        modifier = Modifier
-                            .focusable(true)
-                            .focusRequester(focusRequester),
-                        text = { Text("Settings") },
-                        onClick = { /* Handle settings! */ },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Outlined.Settings,
-                                contentDescription = null
-                            )
-                        })
+                    .padding(8.dp)
+                    .verticalScroll(rememberScrollState())
+                ) {
+                    SettingTitleArea(onExpanded)
+                    HardModeSwitchSettingItem(state.hardMode){ settingsViewModel.setHardMode(it) }
                     Divider()
-                    Row() {
-                        Text(text = "Hard Mode", modifier = Modifier.focusable(true))
-                        Switch(checked = false, onCheckedChange = {  },modifier = Modifier.focusable(true))
-
-                    }
-
-                    Row() {
-                        Switch(checked = false, onCheckedChange = {  })
-
-                    }
+                    DarkThemeSwitchSettingItem(state.darkTheme){ settingsViewModel.setDarkTheme(it)}
+                    Divider()
+                    HightContrastSwitchSettingItem(state.highContrast){ settingsViewModel.setHightContrast(it)}
+                    Divider()
+                    TwitterSettingItem()
+                    Divider()
+                    WebSiteSettingItem()
+                    Divider()
+                    Spacer(modifier = Modifier.height(50.dp))
+                    CopyRight()
                 }
             }
-            
-
         }
     }
-*/
+}
 
-    if(expanded){
-        AlertDialog(onDismissRequest = onExpanded,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.8f)
-                .align(BottomCenter),
-            properties = DialogProperties(usePlatformDefaultWidth = false)
-        ) {
-            Column(modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-            ) {
-                IconButton(modifier = Modifier.align(End),
-                    onClick = { onExpanded() }) {
-                    Icon(Icons.Outlined.Close,"Close",)
-                }
-                DropdownMenuItem(
-                    text = { Text("Hard Mode") },
-                    onClick = { /* Handle edit! */ },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Edit,
-                            contentDescription = null
-                        )
-                    })
-                DropdownMenuItem(
-                    text = { Text("Settings") },
-                    onClick = { /* Handle settings! */ },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Settings,
-                            contentDescription = null
-                        )
-                    })
-                Divider()
-                DropdownMenuItem(
-                    text = { Text("Send Feedback") },
-                    onClick = { /* Handle send feedback! */ },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Outlined.Email,
-                            contentDescription = null
-                        )
-                    },
-                    trailingIcon = { Text("F11", textAlign = TextAlign.Center) })
-            }
-
-        }
-    }
-
-
-    /*
-
-    DropdownMenu(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.8f)
-            .padding(8.dp),
-        expanded = expanded,
-        onDismissRequest = { onExpanded() },
-    ) {
-        IconButton(modifier = Modifier
-            .align(End),
+@Composable
+private fun SettingTitleArea(onExpanded: () -> Unit) {
+    Box(Modifier.fillMaxWidth()){
+        SettingTitle(modifier = Modifier.align(Center))
+        IconButton(modifier = Modifier.align(TopEnd),
             onClick = { onExpanded() }) {
             Icon(Icons.Outlined.Close,"Close",)
         }
-        DropdownMenuItem(
-            text = { Text("Hard Mode") },
-            onClick = { /* Handle edit! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Edit,
-                    contentDescription = null
-                )
-            })
-        DropdownMenuItem(
-            text = { Text("Settings") },
-            onClick = { /* Handle settings! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Settings,
-                    contentDescription = null
-                )
-            })
-        Divider()
-        DropdownMenuItem(
-            text = { Text("Send Feedback") },
-            onClick = { /* Handle send feedback! */ },
-            leadingIcon = {
-                Icon(
-                    Icons.Outlined.Email,
-                    contentDescription = null
-                )
-            },
-            trailingIcon = { Text("F11", textAlign = TextAlign.Center) })
     }
-
-*/
-
-/*
-    if (expanded) {
-        AlertDialog(
-            modifier = Modifier.fillMaxSize(),
-            onDismissRequest = { onExpanded() }) {
-            DropdownMenuItem(
-                text = { Text("Edit") },
-                onClick = { /* Handle edit! */ },
-                leadingIcon = {
-                    Icon(
-                        Icons.Outlined.Edit,
-                        contentDescription = null
-                    )
-                })
-            DropdownMenuItem(
-                text = { Text("Settings") },
-                onClick = { /* Handle settings! */ },
-                leadingIcon = {
-                    Icon(
-                        Icons.Outlined.Settings,
-                        contentDescription = null
-                    )
-                })
+}
+@Composable
+private fun SettingTitle(modifier: Modifier) {
+    Text(text = "SETTINGS",
+        style = MaterialTheme.typography.titleMedium,
+        modifier = modifier,
+        fontWeight = FontWeight.Black
+    )
+}
+@Composable
+private fun CopyRight() {
+    Text(text = "© 2023 Kodlamaya Basla",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
+}
+@Composable
+private fun SwitchItem(
+    title: String,
+    subTitle: String? = null,
+    checked: Boolean = false,
+    onChanged: (Boolean) -> Unit
+) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(verticalArrangement = Arrangement.Center) {
+            Text(text = title,
+                style = MaterialTheme.typography.titleMedium)
+            if (subTitle != null) {
+                Text(text = subTitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f))
+            }
         }
+        Switch(checked = checked, onCheckedChange = { onChanged(it) } )
     }
- */
+}
+
+@Composable
+private fun HardModeSwitchSettingItem(checked : Boolean, onChanged : (Boolean) -> Unit) {
+    SwitchItem("Hard Mode", "Longer text is here for the subtitle",checked,onChanged)
+}
+@Composable
+private fun DarkThemeSwitchSettingItem(checked : Boolean, onChanged : (Boolean) -> Unit) {
+    SwitchItem("Dark Theme",null,checked,onChanged)
+}
+@Composable
+private fun HightContrastSwitchSettingItem(checked : Boolean, onChanged : (Boolean) -> Unit) {
+    SwitchItem("High Contrast Mode", "For improved color vision",checked,onChanged)
+}
+
+@Composable
+private fun OpenLinkSettingItem(title: String, linkTitle: String, url : String) {
+    val uriHandler = LocalUriHandler.current
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(text = title, style = MaterialTheme.typography.titleMedium)
+
+        ClickableText(
+            text = AnnotatedString(linkTitle),
+            onClick = { uriHandler.openUri(url) },
+            style = TextStyle(color = MaterialTheme.colorScheme.onBackground)
+        )
+    }
+}
+
+@Composable
+private fun WebSiteSettingItem() {
+    OpenLinkSettingItem("Questions", "Kodlamaya Basla","https://kodlamayabasla.com")
+}
+@Composable
+private fun TwitterSettingItem() {
+    OpenLinkSettingItem("Community", "Twitter","https://twitter.com/sn_halil")
+}
+
+@Preview
+@Composable
+fun ClickableSettingItemPreview() {
+    OpenLinkSettingItem("Follow Us", "Kodlamaya Basla","https://kodlamayabasla.com")
+}
+
+
+@Preview
+@Composable
+fun SwitchItemPreview() {
+    val checked = remember {
+        mutableStateOf(false)
+    }
+    Column {
+        SwitchItem("Hard Mode",null,checked.value, onChanged = {checked.value = !checked.value})
+        Divider()
+        SwitchItem("Hard Mode",null,checked.value, onChanged = {checked.value = !checked.value})
+    }
+}
+
+@Preview
+@Composable
+fun SwitchItemSubtitlePreview() {
+    val checked = remember {
+        mutableStateOf(false)
+    }
+    SwitchItem("Hard Mode", "Longer text is here for the subtitle" , checked.value, onChanged = {checked.value = !checked.value})
+}
+
+@Preview
+@Composable
+fun SettingTitlePreview() {
+    SettingTitle(modifier = Modifier)
 }
