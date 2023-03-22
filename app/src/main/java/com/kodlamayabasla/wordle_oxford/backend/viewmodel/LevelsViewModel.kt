@@ -5,8 +5,11 @@ import com.kodlamayabasla.wordle_oxford.backend.models.Level
 import com.kodlamayabasla.wordle_oxford.backend.repository.LevelRepository
 import com.kodlamayabasla.wordle_oxford.backend.usecase.GetNextLevel
 import com.kodlamayabasla.wordle_oxford.backend.usecase.ResetLevels
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LevelsViewModel(
+@HiltViewModel
+class LevelsViewModel @Inject constructor(
     private val levelRepository: LevelRepository,
     private val getNextLevel: GetNextLevel,
     private val resetLevels: ResetLevels,

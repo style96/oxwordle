@@ -1,8 +1,9 @@
 package com.kodlamayabasla.wordle_oxford.backend.models
 
+
 data class Game(
-    val originalWord: Word,
-    val guesses: List<Guess>,
+    val originalWord: Word = Word(""),
+    val guesses: List<Guess> = listOf(),
     val wordLength: Int = 5,
     private val keyboardKeys: KeyboardKeys = KeyboardKeys.English(),
 ) {

@@ -1,5 +1,7 @@
 package com.kodlamayabasla.wordle_oxford.backend.viewmodel
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+
 class SettingsViewModel : BaseViewModel<SettingsViewModel.State>(State()) {
     data class State(
         val hardMode: Boolean = false,

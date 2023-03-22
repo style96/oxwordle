@@ -17,6 +17,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kodlamayabasla.wordle_oxford.backend.models.Game
 import com.kodlamayabasla.wordle_oxford.backend.repository.AssetFileWordRepository
@@ -28,7 +30,9 @@ import com.kodlamayabasla.wordle_oxford.backend.viewmodel.*
 import com.kodlamayabasla.wordle_oxford.ui.GameHeader
 import com.kodlamayabasla.wordle_oxford.ui.WordScreen
 import com.kodlamayabasla.wordle_oxford.ui.theme.OxWordleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val tag = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,43 +44,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // simple dependency injection
-                    val assetWordRepository = remember {
-                        AssetFileWordRepository(assets)
-                    }
-                    val getWordStatus = remember {
-                        GetWordStatus(assetWordRepository)
-                    }
-
-                    val sharedPreferences: SharedPreferences = remember {
-                        getSharedPreferences("default", MODE_PRIVATE)
-                    }
-                    val levelRepository = remember {
-                        LocalStorageLevelRepository(sharedPreferences)
-                    }
-
-                    val getNextLevel = remember {
-                        GetNextLevel(assetWordRepository, levelRepository)
-                    }
-                    val resetLevels = remember {
-                        ResetLevels(levelRepository)
-                    }
-
-                    val levelViewModel:LevelsViewModel = viewModel(
-                        factory = LevelsViewModelFactory(levelRepository, getNextLevel, resetLevels)
-                    )
+                    val levelViewModel = hiltViewModel<LevelsViewModel>()
                     val level = levelViewModel.state().collectAsState().value.currentLevel
                     Log.d("deneme","deneme")
 
                     if (level != null) {
-                        val word = remember(level.word){
-                            level.word
-                        }
-                        val initialGame = remember(word) {
-                            Game(word, listOf(), 5)
-                        }
-                        val gameViewModel: GameViewModel = viewModel(
-                            factory = GameViewModelFactory(initialGame, getWordStatus))
+                        val gameViewModel: GameViewModel = hiltViewModel()
                         remember(level.word) {
                             gameViewModel.startNewGame(level.word)
                         }

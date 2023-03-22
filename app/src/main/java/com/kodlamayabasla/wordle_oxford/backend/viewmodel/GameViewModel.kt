@@ -6,17 +6,19 @@ import com.kodlamayabasla.wordle_oxford.backend.models.Guess
 import com.kodlamayabasla.wordle_oxford.backend.models.Word
 import com.kodlamayabasla.wordle_oxford.backend.models.WordStatus
 import com.kodlamayabasla.wordle_oxford.backend.usecase.GetWordStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class GameViewModel(
-    initialGame: Game,
+@HiltViewModel
+class GameViewModel @Inject constructor(
     private val getWordStatus: GetWordStatus,
-) : BaseViewModel<GameViewModel.State>(State(initialGame)) {
+) : BaseViewModel<GameViewModel.State>(State()) {
     data class State(
-        val game: Game,
+        val game: Game = Game(),
         val currentlyEnteringWord: String? = null,
         val doesNotExist: Boolean = false,
     )
-    private val originalWord = initialGame.originalWord
+    private val originalWord = Word("")
 
     fun characterEntered(character: Char) {
         if (wordIsEnteredCompletely()) return

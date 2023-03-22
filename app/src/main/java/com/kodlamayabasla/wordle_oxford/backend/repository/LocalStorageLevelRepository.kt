@@ -2,9 +2,10 @@ package com.kodlamayabasla.wordle_oxford.backend.repository
 
 import android.content.SharedPreferences
 import com.kodlamayabasla.wordle_oxford.backend.models.Level
+import javax.inject.Inject
 import kotlin.math.max
 
-class LocalStorageLevelRepository(
+class LocalStorageLevelRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences,
 ) : LevelRepository {
     private var lastLevel: Long

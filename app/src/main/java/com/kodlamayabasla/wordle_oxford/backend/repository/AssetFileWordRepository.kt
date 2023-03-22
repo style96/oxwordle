@@ -2,8 +2,9 @@ package com.kodlamayabasla.wordle_oxford.backend.repository
 
 import android.content.res.AssetManager
 import com.kodlamayabasla.wordle_oxford.backend.models.Word
+import javax.inject.Inject
 
-class AssetFileWordRepository(assetManager: AssetManager) : WordRepository {
+class AssetFileWordRepository @Inject constructor(assetManager: AssetManager) : WordRepository {
     private val allWords =
         assetManager.open("words.txt").readBytes().decodeToString().split("\r\n", "\n")
             .filter { it.length == 5 }.map { it.uppercase().trim() }.toSet()

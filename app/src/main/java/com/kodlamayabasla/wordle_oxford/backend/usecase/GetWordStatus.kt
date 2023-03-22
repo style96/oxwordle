@@ -4,8 +4,9 @@ import com.kodlamayabasla.wordle_oxford.backend.models.EqualityStatus
 import com.kodlamayabasla.wordle_oxford.backend.models.Word
 import com.kodlamayabasla.wordle_oxford.backend.models.WordStatus
 import com.kodlamayabasla.wordle_oxford.backend.repository.WordRepository
+import javax.inject.Inject
 
-class GetWordStatus(private val wordRepository: WordRepository) {
+class GetWordStatus @Inject constructor(private val wordRepository: WordRepository) {
     fun execute(
         word: Word,
         original: Word,

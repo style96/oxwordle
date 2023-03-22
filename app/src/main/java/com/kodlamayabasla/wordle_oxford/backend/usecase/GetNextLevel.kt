@@ -3,8 +3,9 @@ package com.kodlamayabasla.wordle_oxford.backend.usecase
 import com.kodlamayabasla.wordle_oxford.backend.models.Level
 import com.kodlamayabasla.wordle_oxford.backend.repository.LevelRepository
 import com.kodlamayabasla.wordle_oxford.backend.repository.WordRepository
+import javax.inject.Inject
 
-class GetNextLevel(
+class GetNextLevel @Inject constructor(
     private val wordRepository: WordRepository,
     private val levelRepository: LevelRepository,
 ) {
