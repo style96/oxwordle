@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.kodlamayabasla.wordle_oxford";
+option java_multiple_files = true;
+
+message WordleOxfordGame {
+  bool game_mode = 1;
+  string guesses = 2;
+}

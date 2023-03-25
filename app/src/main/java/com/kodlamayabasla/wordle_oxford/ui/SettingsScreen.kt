@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.SettingsViewModel
 
 @Composable
@@ -31,7 +32,8 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel,
     expanded : Boolean,
     onExpanded : () -> Unit) {
-    val state by settingsViewModel.state().collectAsState()
+    val state by settingsViewModel.state().collectAsStateWithLifecycle()
+
     if (expanded){
         Box(modifier = Modifier
             .fillMaxSize()

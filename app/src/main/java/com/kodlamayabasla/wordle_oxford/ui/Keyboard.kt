@@ -1,13 +1,10 @@
 package com.kodlamayabasla.wordle_oxford.ui
 
-import android.content.Context
-import android.os.Vibrator
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -122,7 +118,7 @@ private fun KeyboardKey(
         EqualityStatus.Correct -> MaterialTheme.colorScheme.correctBackground
         else -> MaterialTheme.colorScheme.keyboard
     })
-    val testColor by animateColorAsState(targetValue = when (status) {
+    val textColor by animateColorAsState(targetValue = when (status) {
         EqualityStatus.WrongPosition -> MaterialTheme.colorScheme.onWrongPositionBackground
         EqualityStatus.Correct -> MaterialTheme.colorScheme.onCorrectBackground
         EqualityStatus.Incorrect -> MaterialTheme.colorScheme.onIncorrectBackground
@@ -140,7 +136,7 @@ private fun KeyboardKey(
         Text(
             modifier = Modifier,
             text = text,
-            color = testColor,
+            color = textColor,
             fontSize = 24.sp
         )
     }

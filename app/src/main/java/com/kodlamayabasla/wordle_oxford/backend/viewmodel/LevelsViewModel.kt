@@ -20,6 +20,7 @@ class LevelsViewModel @Inject constructor(
         )
 
     init {
+        Log.d("LevelsViewModel","init")
         updateLevel()
     }
 

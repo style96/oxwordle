@@ -11,7 +11,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
@@ -24,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.SettingsViewModel
 import com.kodlamayabasla.wordle_oxford.ui.theme.correctBackground
 import com.kodlamayabasla.wordle_oxford.ui.theme.incorrectBackground
@@ -34,7 +34,7 @@ fun StatisticsScreen(
     statisticsViewModel: SettingsViewModel,
     expanded : Boolean,
     onExpanded : () -> Unit) {
-    val state by statisticsViewModel.state().collectAsState()
+    val state by statisticsViewModel.state().collectAsStateWithLifecycle()
     if (expanded){
         Box(modifier = Modifier
             .fillMaxSize()

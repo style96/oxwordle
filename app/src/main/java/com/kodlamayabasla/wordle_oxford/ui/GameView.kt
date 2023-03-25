@@ -32,7 +32,6 @@ import com.kodlamayabasla.wordle_oxford.backend.models.WordStatus
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModel
 import com.kodlamayabasla.wordle_oxford.ui.theme.*
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 internal fun GameGrid(
     state: GameViewModel.State,
@@ -119,7 +118,6 @@ fun EmptyCharacterBox(
 }
 
 @Composable
-@OptIn(ExperimentalAnimationApi::class)
 internal fun BasicCharacterBox(
     borderModifier: Modifier,
     color: Color,
