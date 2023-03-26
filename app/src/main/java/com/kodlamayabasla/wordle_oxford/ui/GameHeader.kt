@@ -72,7 +72,7 @@ internal fun ColumnScope.GameHeader(
 fun RowScope.GameHeaderLeft(onHelp : () -> Unit){
     Row(modifier = Modifier.weight(0.5f)){
         IconButton(modifier = Modifier.weight(1f),onClick = onHelp) {
-            Icon(Icons.Default.Info,"info",Modifier.weight(1f))
+            Icon(painter = painterResource(R.drawable.baseline_help_outline_24),"info",Modifier.weight(1f))
         }
     }
 }
@@ -91,7 +91,7 @@ fun RowScope.GameHeaderTitle(){
 fun RowScope.GameHeaderRight(onSettings : () -> Unit, onStatistics : () -> Unit){
     Row(modifier = Modifier.weight(0.5f)) {
         IconButton(modifier = Modifier.weight(1f), onClick = onStatistics) {
-            Icon(painter = painterResource(R.drawable.baseline_leaderboard_24), "statistic")
+            Icon(painter = painterResource(R.drawable.baseline_leaderboard_24), "statistic",Modifier.weight(1f))
         }
         IconButton(modifier = Modifier.weight(1f),onClick = onSettings ) {
             Icon(Icons.Default.Settings,"settings",Modifier.weight(1f))

@@ -99,6 +99,7 @@ fun GameScreen(
                 onSubmit = onSubmit,
             )
         }
+        HelpScreen(settingsViewModel,help, onExpanded = {help = !help})
         SettingsScreen(settingsViewModel,settings, onExpanded = {settings = !settings})
         StatisticsScreen(settingsViewModel,statistics, onExpanded = {statistics = !statistics})
         ErrorScreen(state, shownError)

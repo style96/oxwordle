@@ -75,6 +75,11 @@ fun SettingsScreen(
                     Divider()
                     WebSiteSettingItem()
                     Divider()
+                    PrivacyPolicyItem()
+                    Divider()
+                    TermsConditionsItem()
+                    Divider()
+
                     Spacer(modifier = Modifier.height(50.dp))
                     CopyRight()
                 }
@@ -171,6 +176,15 @@ private fun WebSiteSettingItem() {
 @Composable
 private fun TwitterSettingItem() {
     OpenLinkSettingItem("Community", "Twitter","https://twitter.com/sn_halil")
+}
+
+@Composable
+private fun PrivacyPolicyItem() {
+    OpenLinkSettingItem("Privacy Policy", "Read Privacy Policy","https://kodlamayabasla.com/privacy-policy-oxwordle/")
+}
+@Composable
+private fun TermsConditionsItem() {
+    OpenLinkSettingItem("Terms & Conditions", "Read Terms & Conditions","https://kodlamayabasla.com/terms-conditions-oxwordle/")
 }
 
 @Preview

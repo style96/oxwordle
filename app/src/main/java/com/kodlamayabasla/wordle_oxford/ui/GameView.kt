@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kodlamayabasla.wordle_oxford.backend.models.EqualityStatus
+import com.kodlamayabasla.wordle_oxford.backend.models.Guess
+import com.kodlamayabasla.wordle_oxford.backend.models.Word
 import com.kodlamayabasla.wordle_oxford.backend.models.WordStatus
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModel
 import com.kodlamayabasla.wordle_oxford.ui.theme.*
@@ -45,7 +47,7 @@ internal fun GameGrid(
             repeat(6) { row ->
                 Row(
                     Modifier
-                        .weight(1f,false)
+                        .weight(1f, false)
                         .padding(top = 6.dp),
                     horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically) {
@@ -131,11 +133,11 @@ internal fun BasicCharacterBox(
     }
     Box(
         modifier
-            .aspectRatio(1f,true)
+            .aspectRatio(1f, true)
             .clip(RoundedCornerShape(2.dp))
             .then(borderModifier)
             .background(animateColorAsState(targetValue = color).value),
-        contentAlignment = Alignment.Center) {
+        contentAlignment = Center) {
         AnimatedVisibility(character != null) {
             Text(lastChar?.uppercase() ?: "",
                 color = animateColorAsState(targetValue = textColor).value,
@@ -150,10 +152,19 @@ internal fun BasicCharacterBox(
 @Preview
 @Composable
 internal fun CharacterBoxPreview() {
-    Row {
-        WordCharacterBox(character = 'A', status = null)
-        WordCharacterBox(character = 'D', status = EqualityStatus.Incorrect)
-        WordCharacterBox(character = 'I', status = EqualityStatus.WrongPosition)
-        WordCharacterBox(character = 'B', status = EqualityStatus.Correct)
+    Column() {
+        Row(
+            Modifier
+                .weight(1f,false)
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(top = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically) {
+            WordCharacterBox(character = 'B', status = EqualityStatus.Correct)
+            WordCharacterBox(character = 'B', status = EqualityStatus.Incorrect)
+            WordCharacterBox(character = 'B', status = EqualityStatus.WrongPosition)
+            WordCharacterBox(character = 'B', status = null)
+        }
     }
 }
