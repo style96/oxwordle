@@ -28,11 +28,18 @@ import com.kodlamayabasla.wordle_oxford.ui.GameHeader
 import com.kodlamayabasla.wordle_oxford.ui.WordScreen
 import com.kodlamayabasla.wordle_oxford.ui.theme.OxWordleTheme
 import dagger.hilt.android.AndroidEntryPoint
+import com.google.android.gms.ads.MobileAds
+import com.kodlamayabasla.wordle_oxford.ui.ads.AdvertView
+import com.kodlamayabasla.wordle_oxford.ui.ads.loadInterstitial
+import com.kodlamayabasla.wordle_oxford.ui.ads.removeInterstitial
+import com.kodlamayabasla.wordle_oxford.ui.ads.showInterstitial
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val tag = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
+        MobileAds.initialize(this){}
         super.onCreate(savedInstanceState)
         setContent {
             val settingsViewModel = hiltViewModel<SettingsViewModel>()
@@ -102,5 +109,11 @@ class MainActivity : ComponentActivity() {
             }
 
         }
+        //loadInterstitial(this)
+    }
+
+    override fun onDestroy() {
+        //removeInterstitial()
+        super.onDestroy()
     }
 }

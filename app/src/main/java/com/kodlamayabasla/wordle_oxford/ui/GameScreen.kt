@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kodlamayabasla.wordle_oxford.backend.models.Level
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.GameViewModel
 import com.kodlamayabasla.wordle_oxford.backend.viewmodel.SettingsViewModel
+import com.kodlamayabasla.wordle_oxford.ui.ads.AdvertView
 
 @Composable
 internal fun WordScreen(
@@ -73,7 +74,7 @@ fun GameScreen(
     ) {
         Column(
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 16.dp)
+                .padding(top = 16.dp, start = 8.dp, end = 8.dp)
                 .widthIn(max = 500.dp),
             verticalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -93,11 +94,14 @@ fun GameScreen(
             Spacer(modifier = Modifier.size(16.dp))
             GameKeyboard(
                 state,
-                modifier = Modifier.align(CenterHorizontally),
+                modifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(bottom = 8.dp),
                 onKey = onKey,
                 onBackspace = onBackspace,
                 onSubmit = onSubmit,
             )
+            AdvertView(modifier = Modifier.height(50.dp))
         }
         HelpScreen(settingsViewModel,help, onExpanded = {help = !help})
         SettingsScreen(settingsViewModel,settings, onExpanded = {settings = !settings})
