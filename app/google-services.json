@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "866803969976",
+    "project_id": "oxwordleproject",
+    "storage_bucket": "oxwordleproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866803969976:android:a2d20d7f7b1b540d4ba94d",
+        "android_client_info": {
+          "package_name": "com.kodlamayabasla.wordle_oxford"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866803969976-bbagbd7bhk6bt171omrif4mdksseee2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kodlamayabasla.wordle_oxford",
+            "certificate_hash": "ed584ab7aeef13d316077a8acb7852ba1cc89181"
+          }
+        },
+        {
+          "client_id": "866803969976-ov59rjjuudqig5qa3n7npo0ako3lh0mj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8EJUi1kTFS_F77nyntFFRJvboPfc8MII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866803969976-ov59rjjuudqig5qa3n7npo0ako3lh0mj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
